@@ -55,7 +55,7 @@ console.log("Canvas Width: " + canvasWidth);
 
 /** ENEMIES */
 
-/** BRICK VARIABLES */
+/** ENEMY VARIABLES */
 
 var enemyRowCount = 3;
 var enemyColumnCount = 3;
@@ -68,14 +68,14 @@ var enemyOffsetLeft = 155;
 /** Holds all the bricks in a 2-d array
   each brick will create an object with x/y coords */
 
-// Loops thru the rows and columns and create new bricks
+// Loops thru the rows and columns and create new enemies
 var enemies = [];
 
 for(c = 0; c < enemyColumnCount;c++){
   enemies[c] = [];
 
   for(r = 0; r < enemyRowCount; r++){
-    enemies[c][r] = {x: 0, y:0, status: 1}; // status --> aids in bricks dissapearing
+    enemies[c][r] = {x: 0, y:0, status: 1}; // status --> aids in enemies dissapearing
   } // if status = 0, don't repaint this brick
 }
 
@@ -256,9 +256,6 @@ function enemyCollision()
   }
 }
 
-
-
-
 var render = function (){
 
   /** MAKING IT MOVE */
@@ -291,7 +288,7 @@ var render = function (){
     //console.log("INSIDE the RESET");
     enemyKills = 0;
     resetEnemies(); 
-    // drawEnemies();
+    drawEnemies();
   }
 
 
