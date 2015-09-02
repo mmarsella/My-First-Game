@@ -88,7 +88,7 @@ function drawEnemies()
     {
       if(enemies[c][r].status == 1) //checks to see if enemy hasn't been hit (1), rewrite
       {
-        // Calculation to set x/y coords for each brick (so they won't stack on eachother)
+        // Calculation to set x/y coords for each enemy (so they won't stack on eachother)
         var enemyX = (r*(enemyWidth+enemyPadding)) + enemyOffsetLeft;
         var enemyY = (c*(enemyHeight+enemyPadding)) + enemyOffsetTop;
           enemies[c][r].x = enemyX;
@@ -102,7 +102,6 @@ function drawEnemies()
     }
   }
 }
-
 
 
 function collisionDetection()
@@ -147,6 +146,11 @@ function enemyCollision()
         {
           console.log("HIT!");
           enem.status = 0;  // Mark as a hit
+          shoot = false;
+          fireCount = 0;
+          spaceCount = 0;
+          x = shipX + 30;
+          y = shipY;
         }
       }
     }
@@ -173,8 +177,8 @@ shipImage.onload = function () {
 };
 shipImage.src = "images/speedship.png";
 
-var shipX = canvas.width / 2;
-var shipY = canvas.height / 2;
+var shipX = (canvas.width / 2) - 30;
+var shipY = canvas.height  - 100;
 console.log("Ship X: " + shipX);
 console.log("Ship Y: " + shipY);
 
