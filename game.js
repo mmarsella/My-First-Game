@@ -119,7 +119,7 @@ function collisionDetection()
     y = shipY;
   }
 
-  /** SHIP */
+  /** SHIP (w/WALLS) */
 
   if(shipX < 0)
   {
@@ -131,7 +131,26 @@ function collisionDetection()
   }
 
 
+}
 
+function enemyCollision()
+{
+  for(c = 0; c < enemyColumnCount; c++)
+  {
+    for(r = 0; r < enemyRowCount; r++)
+    {
+      var enem = enemies[c][r];
+
+      if(enem.status == 1)
+      {
+        if(startX + ballRadius > enem.x && startX - ballRadius < enem.x + enemyWidth && startY + ballRadius > enem.y && startY - ballRadius < enem.y + enemyHeight)
+        {
+          console.log("HIT!");
+          enem.status = 0;  // Mark as a hit
+        }
+      }
+    }
+  }
 }
 
 
@@ -170,8 +189,8 @@ var y = shipY;
 console.log("X: " + x);
 console.log("y: " + y);
  // add a small value to x and y after every frame has been drawn to make it appear that the ball is moving.
-var dx = 5;
-var dy = -8;
+var dx = 5;  // may not need this
+var dy = -28;
 
 
 
@@ -196,9 +215,11 @@ var render = function (){
       drawBall(); 
     }
 
+  enemyCollision();
   drawEnemies();
   // console.log('Y: ' + y + ballRadius);
   // console.log("DY: " + dy);
+
   collisionDetection();
 
 };
@@ -320,11 +341,6 @@ var main = function ()
 
 var then = Date.now();
 main();
-
-
-// var bullet = {
-//   x: x
-// }
 
 
 // draws ball starting from the center of the ship
