@@ -1,7 +1,7 @@
 /** 
 
-STORY:  Village on bottom of screen
-- Needs to protect village with the only ship in the poor village
+- Village on bottom of screen
+- Needs to protect village with the only ship 
 - If any enemies cross the line, game over.
 
 1) User controls a ship on bottom of screen. 
@@ -47,6 +47,93 @@ var startY;
 
 var bulletRadius = 5;
 
+var canvasHeight = canvas.height;
+var canvasWidth = canvas.width;
+console.log("Canvas Height: " + canvasHeight);
+console.log("Canvas Width: " + canvasWidth);
+
+
+/** ENEMIES */
+
+/** BRICK VARIABLES */
+
+var enemyRowCount = 2;
+var enemyColumnCount = 2;
+var enemyWidth = 75;
+var enemyHeight = 20;
+var enemyPadding = 10;
+var enemyOffsetTop = 90;
+var enemyOffsetLeft = 155;
+
+/** Holds all the bricks in a 2-d array
+  each brick will create an object with x/y coords */
+
+// Loops thru the rows and columns and create new bricks
+var enemies = [];
+
+for(c = 0; c < enemyColumnCount;c++){
+  enemies[c] = [];
+
+  for(r = 0; r < enemyRowCount; r++){
+    enemies[c][r] = {x: 0, y:0, status: 1}; // status --> aids in bricks dissapearing
+  } // if status = 0, don't repaint this brick
+}
+
+
+function drawEnemies()
+{
+  for(c = 0; c < enemyColumnCount; c++)
+  {
+    for(r=0; r < enemyRowCount; r++)
+    {
+      if(enemies[c][r].status == 1) //checks to see if enemy hasn't been hit (1), rewrite
+      {
+        // Calculation to set x/y coords for each brick (so they won't stack on eachother)
+        var enemyX = (r*(enemyWidth+enemyPadding)) + enemyOffsetLeft;
+        var enemyY = (c*(enemyHeight+enemyPadding)) + enemyOffsetTop;
+          enemies[c][r].x = enemyX;
+          enemies[c][r].y = enemyY;
+          ctx.beginPath();
+          ctx.rect(enemyX,enemyY,enemyWidth,enemyHeight);
+          ctx.fillStyle = "#0095DD";
+          ctx.fill();
+          ctx.closePath(); 
+      }
+    }
+  }
+}
+
+
+
+function collisionDetection()
+{
+
+  /** BULLET */
+  if(startY < 0)
+  {
+  console.log("DETECTING...");
+    shoot = false;
+    fireCount = 0;
+    spaceCount = 0;
+    x = shipX + 30;
+    y = shipY;
+  }
+
+  /** SHIP */
+
+  if(shipX < 0)
+  {
+    leftPressed = false;
+  }
+  else if(shipY > canvasHeight - shipHeight)
+  {
+    downPressed = false;  
+  }
+
+
+
+}
+
 
 
 
@@ -83,8 +170,8 @@ var y = shipY;
 console.log("X: " + x);
 console.log("y: " + y);
  // add a small value to x and y after every frame has been drawn to make it appear that the ball is moving.
-var dx = 2;
-var dy = -2;
+var dx = 5;
+var dy = -8;
 
 
 
@@ -99,19 +186,20 @@ var render = function (){
     ctx.clearRect(0,0, canvas.width, canvas.height);
 
       
-
   if(shipReady) {
     // if there is a ball redraw the ball
     ctx.drawImage(shipImage,shipX,shipY,shipWidth,shipHeight);
   }
 
   if(shoot) {
+      console.log("Drawing ball....");
       drawBall(); 
     }
-  // if(shoot)
-  // {
-  //   drawShot();
-  // }
+
+  drawEnemies();
+  // console.log('Y: ' + y + ballRadius);
+  // console.log("DY: " + dy);
+  collisionDetection();
 
 };
 
@@ -142,7 +230,7 @@ function keyDownHandler(e)
   }
   else if(e.keyCode == 40)
   {
-    console.log("down");
+    console.log("shipY: " + shipY);
     downPressed = true;
   }
   else if(e.keyCode == 32)
@@ -176,13 +264,9 @@ function keyUpHandler(e)  // e --> event
   }
   else if(e.keyCode == 32)
   {
-    console.log("SPACE UP!");
     spacePressed = !spacePressed;
-    console.log("Space is :" + spacePressed);
   }
 }
-
-
 
 
 var update = function(mod)
@@ -225,7 +309,7 @@ var main = function ()
   var delta = now - then;
 
 
-  update(delta / 500);
+  update(delta / 10000);
   render();
 
   then = now;
@@ -238,10 +322,15 @@ var then = Date.now();
 main();
 
 
+// var bullet = {
+//   x: x
+// }
 
+
+// draws ball starting from the center of the ship
+// and travels up y-axis 
 function drawBall()
 {
-  
    // drawing code
   ctx.beginPath();
   //why the Math.PI * 2???
@@ -261,31 +350,35 @@ function drawBall()
     fireCount++;
 
   }
-
   else if(fireCount > 1 && spaceCount > 0) {
 
-    console.log("Firecount after!", fireCount);
+    //console.log("Firecount after!", fireCount);
     // on any render after do this....
     ctx.arc(startX,startY,ballRadius,0, Math.PI*2);  
     ctx.fillStyle = color;
     ctx.fill();
     ctx.closePath();
     startY += dy;
-  }
-  
-
-  
+  } 
 }
 
-// function drawShot()
-// {
-//     // drawing code
-//   ctx.beginPath();
-//   //why the Math.PI * 2???
-//   ctx.arc(x,y,bulletRadius,0, Math.PI*2);
-//   ctx.fillStyle = "red";
-//   ctx.fill();
-//   ctx.closePath();
-//   x += dx;
-//   y += dy;
-// }
+
+
+
+
+/*  TO DO 
+
+1)  Collision detection around canvas for ship and ball
+2)  generate enemy objects
+
+
+*/
+
+
+
+
+
+
+
+
+
