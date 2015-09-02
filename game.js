@@ -58,7 +58,7 @@ console.log("Canvas Width: " + canvasWidth);
 /** BRICK VARIABLES */
 
 var enemyRowCount = 3;
-var enemyColumnCount = 2;
+var enemyColumnCount = 3;
 var enemyWidth = 20;
 var enemyHeight = 20;
 var enemyPadding = 10;
@@ -89,11 +89,45 @@ var enemyKills = 0;
 //Checks win/lose status of game
 var end = false;
 
+/**
+We use on-load when we are manipulating images that we are
+importing into the game */
+
+/**
+We DO NOT use on-load when shapes are drawn using the canvas tool */
+
+// Ship image  --> http://millionthvector.blogspot.com/p/free-sprites.html
+var shipReady = true;
+var shipImage = new Image();
+shipImage.onload = function () {
+  shipReady = true;
+};
+shipImage.src = "images/speedship.png";
+
+var shipX = (canvas.width / 2) - 30;
+var shipY = canvas.height  - 100;
+// console.log("Ship X: " + shipX);
+// console.log("Ship Y: " + shipY);
+
+var shipWidth = 60;
+var shipHeight = 75;
+
+//canvas.style.background = "url('images/DenseStarFieldBackground.png')";
+
+//buller coordinates
+var x = shipX + 30;
+var y = shipY;
+//console.log("X: " + x);
+// console.log("y: " + y);
+ // add a small value to x and y after every frame has been drawn to make it appear that the ball is moving.
+var dx = 5;  // may not need this
+var dy = -28;
+
 
 function drawEnemies(dx,dy,currentX,currentY)
 {
-  dx = -0.20;
-  dy = 0.35;
+  //dx = -0.10;
+  dy = 0.10;
   for(c = 0; c < enemyColumnCount; c++)
   {
     for(r=0; r < enemyRowCount; r++)
@@ -109,7 +143,7 @@ function drawEnemies(dx,dy,currentX,currentY)
         // console.log("Left: " + enemyOffsetLeft);
         /** ENEMY MOTION */
          enemyOffsetTop += dy;
-         enemyOffsetLeft += dx;
+        // enemyOffsetLeft += dx;
           enemies[c][r].x = enemyX;
           enemies[c][r].y = enemyY;
           ctx.beginPath();
@@ -202,49 +236,25 @@ function enemyCollision()
           startX = x;
           startY = y;
         }
-        else if(enem.y > canvasHeight)
+        // Enemy touches bottom of canvas
+        else if(enem.y > canvasHeight - enemyHeight)
         {
           end = true;
           lose();
         }
+        //Enemy touches ship
+        // else if(enem.y > shipY && enem.x > shipX && )
+        // {
+        //   end = true;
+        //   dead();
+
+        // }
       }
     }
   }
 }
 
-/**
-We use on-load when we are manipulating images that we are
-importing into the game */
 
-/**
-We DO NOT use on-load when shapes are drawn using the canvas tool */
-
-// Ship image
-var shipReady = true;
-var shipImage = new Image();
-shipImage.onload = function () {
-  shipReady = true;
-};
-shipImage.src = "images/speedship.png";
-
-var shipX = (canvas.width / 2) - 30;
-var shipY = canvas.height  - 100;
-// console.log("Ship X: " + shipX);
-// console.log("Ship Y: " + shipY);
-
-var shipWidth = 60;
-var shipHeight = 75;
-
-//canvas.style.background = "url('images/DenseStarFieldBackground.png')";
-
-//buller coordinates
-var x = shipX + 30;
-var y = shipY;
-//console.log("X: " + x);
-// console.log("y: " + y);
- // add a small value to x and y after every frame has been drawn to make it appear that the ball is moving.
-var dx = 5;  // may not need this
-var dy = -28;
 
 
 var render = function (){
@@ -308,7 +318,7 @@ document.addEventListener("keyup", keyUpHandler, false);
 // when the keys are pressed, set to true
 function keyDownHandler(e)
 {
-  if(e.keyCode == 39)  // keyCode 39 is the right cursor
+  if(e.keyCode == 39  && shipX < canvasWidth - shipWidth)  // keyCode 39 is the right cursor
   {
     //console.log("right");
     rightPressed = true;
@@ -473,6 +483,13 @@ function lose()
   ctx.font = "30px Arial";
   ctx.fillStyle = "black";
   ctx.fillText("YOU LOSE", 160, 100);
+}
+
+function dead()
+{
+  ctx.font = "30px Arial";
+  ctx.fillStyle = "black";
+  ctx.fillText("You've been HIT!",160,100);
 }
 
 
