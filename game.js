@@ -477,21 +477,21 @@ function drawScore()
 function win()
 {
   ctx.font = "30px Arial";
-  ctx.fillStyle = "black";
+  ctx.fillStyle = "white";
   ctx.fillText("YOU WIN!!!", 160, 100);
 }
 
 function lose()
 {
   ctx.font = "30px Arial";
-  ctx.fillStyle = "black";
+  ctx.fillStyle = "white";
   ctx.fillText("YOU LOSE", 160, 100);
 }
 
 function dead()
 {
   ctx.font = "30px Arial";
-  ctx.fillStyle = "black";
+  ctx.fillStyle = "white";
   ctx.fillText("You've been HIT!",160,100);
 }
 
