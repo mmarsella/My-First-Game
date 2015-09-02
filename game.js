@@ -57,9 +57,9 @@ console.log("Canvas Width: " + canvasWidth);
 
 /** BRICK VARIABLES */
 
-var enemyRowCount = 2;
+var enemyRowCount = 3;
 var enemyColumnCount = 2;
-var enemyWidth = 75;
+var enemyWidth = 20;
 var enemyHeight = 20;
 var enemyPadding = 10;
 var enemyOffsetTop = 90;
@@ -82,6 +82,8 @@ for(c = 0; c < enemyColumnCount;c++){
 
 function drawEnemies()
 {
+  var dx = -0.20;
+  var dy = 0.35;
   for(c = 0; c < enemyColumnCount; c++)
   {
     for(r=0; r < enemyRowCount; r++)
@@ -91,6 +93,10 @@ function drawEnemies()
         // Calculation to set x/y coords for each enemy (so they won't stack on eachother)
         var enemyX = (r*(enemyWidth+enemyPadding)) + enemyOffsetLeft;
         var enemyY = (c*(enemyHeight+enemyPadding)) + enemyOffsetTop;
+
+        /** ENEMY MOTION */
+          enemyOffsetTop += dy;
+          enemyOffsetLeft += dx;
           enemies[c][r].x = enemyX;
           enemies[c][r].y = enemyY;
           ctx.beginPath();
@@ -98,6 +104,8 @@ function drawEnemies()
           ctx.fillStyle = "#0095DD";
           ctx.fill();
           ctx.closePath(); 
+         
+
       }
     }
   }
@@ -151,6 +159,10 @@ function enemyCollision()
           spaceCount = 0;
           x = shipX + 30;
           y = shipY;
+
+          // FIXED tthe collision of an already fired/collided ball registering for oncoming enemies to trigger a hit
+          startX = x;
+          startY = y;
         }
       }
     }
