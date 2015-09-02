@@ -112,7 +112,7 @@ var shipY = canvas.height  - 100;
 var shipWidth = 60;
 var shipHeight = 75;
 
-//canvas.style.background = "url('images/DenseStarFieldBackground.png')";
+canvas.style.background = "url('images/background.png')";
 
 //buller coordinates
 var x = shipX + 30;
