@@ -86,11 +86,14 @@ var score = 0;
 
 var enemyKills = 0;
 
+//Checks win/lose status of game
+var end = false;
 
-function drawEnemies()
+
+function drawEnemies(dx,dy,currentX,currentY)
 {
-  var dx = -0.20;
-  var dy = 0.35;
+  dx = -0.20;
+  dy = 0.35;
   for(c = 0; c < enemyColumnCount; c++)
   {
     for(r=0; r < enemyRowCount; r++)
@@ -136,7 +139,7 @@ function resetEnemies()
       enemyOffsetLeft = 155;
 
       var enemyX = (r*(enemyWidth+enemyPadding)) + enemyOffsetLeft;
-        var enemyY = (c*(enemyHeight+enemyPadding)) + enemyOffsetTop;
+      var enemyY = (c*(enemyHeight+enemyPadding)) + enemyOffsetTop;
       enemies[c][r].x = enemyX;
       enemies[c][r].y = enemyY;
     }
@@ -164,6 +167,10 @@ function collisionDetection()
   else if(shipY > canvasHeight - shipHeight)
   {
     downPressed = false;  
+  }
+  else if(shipX > canvasWidth - shipHeight + 16)
+  {
+    rightPressed = false;
   }
 
 }
@@ -195,15 +202,15 @@ function enemyCollision()
           startX = x;
           startY = y;
         }
+        else if(enem.y > canvasHeight)
+        {
+          end = true;
+          lose();
+        }
       }
     }
   }
 }
-
-
-
-
-
 
 /**
 We use on-load when we are manipulating images that we are
@@ -238,8 +245,6 @@ var y = shipY;
  // add a small value to x and y after every frame has been drawn to make it appear that the ball is moving.
 var dx = 5;  // may not need this
 var dy = -28;
-
-
 
 
 var render = function (){
@@ -281,6 +286,12 @@ var render = function (){
   drawScore();
   // console.log('Y: ' + y + ballRadius);
   // console.log("DY: " + dy);
+
+  if(score == 12)
+  {
+    end = true;
+    win();
+  }
 
   collisionDetection();
 
@@ -384,7 +395,6 @@ var update = function(mod)
   }
 };
 
-
 /** THE MAIN GAME LOOP */
 
 var main = function ()
@@ -393,13 +403,16 @@ var main = function ()
   var delta = now - then;
 
 
-  update(delta / 10000);
-  render();
+  if(!end)
+  {
+    update(delta / 10000);
+    render();
 
-  then = now;
+    then = now;
 
-  // Request to do this again ASAP
-  requestAnimationFrame(main);
+    // Request to do this again ASAP
+    requestAnimationFrame(main);
+  }
 };
 
 var then = Date.now();
@@ -448,19 +461,22 @@ function drawScore()
   ctx.fillText("Score: " + score, 8, 20);  //.fillText(text, coordX,coordY)
 }
 
+function win()
+{
+  ctx.font = "30px Arial";
+  ctx.fillStyle = "black";
+  ctx.fillText("YOU WIN!!!", 160, 100);
+}
+
+function lose()
+{
+  ctx.font = "30px Arial";
+  ctx.fillStyle = "black";
+  ctx.fillText("YOU LOSE", 160, 100);
+}
 
 
 
-
-
-
-/*  TO DO 
-
-1)  Collision detection around canvas for ship and ball
-2)  generate enemy objects
-
-
-*/
 
 
 
