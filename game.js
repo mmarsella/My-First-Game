@@ -193,6 +193,8 @@ function collisionDetection()
     y = shipY;
   }
 
+
+  // Why won't my code work w/o this????
   /** SHIP (w/WALLS) */
   if(shipX < 0)
   {
@@ -318,23 +320,24 @@ document.addEventListener("keyup", keyUpHandler, false);
 // when the keys are pressed, set to true
 function keyDownHandler(e)
 {
-  if(e.keyCode == 39  && shipX < canvasWidth - shipWidth)  // keyCode 39 is the right cursor
+  if(e.keyCode == 39 && shipX < canvasWidth - shipWidth)  // keyCode 39 is the right cursor
   {
     //console.log("right");
     rightPressed = true;
   }
-  else if(e.keyCode == 37)  // keycode 37 is left
+  else if(e.keyCode == 37  && shipX > 0)  // keycode 37 is left
   {
     //console.log("left");
     leftPressed = true;
   }
-  else if(e.keyCode == 38)
+  else if(e.keyCode == 38 && shipY > 0)
   {
     //console.log("up");
     upPressed = true;
   }
-  else if(e.keyCode == 40)
+  else if(e.keyCode == 40 && shipY < canvasHeight - shipHeight)
   {
+    console.log("Ship Y: " + shipY);
     //console.log("shipY: " + shipY);
     downPressed = true;
   }
