@@ -80,6 +80,13 @@ for(c = 0; c < enemyColumnCount;c++){
 }
 
 
+/** SCORE/MENU */
+
+var score = 0;
+
+var enemyKills = 0;
+
+
 function drawEnemies()
 {
   var dx = -0.20;
@@ -94,9 +101,12 @@ function drawEnemies()
         var enemyX = (r*(enemyWidth+enemyPadding)) + enemyOffsetLeft;
         var enemyY = (c*(enemyHeight+enemyPadding)) + enemyOffsetTop;
 
+        // console.log("Drawing enemies..");
+        // console.log("Top: " + enemyOffsetTop);
+        // console.log("Left: " + enemyOffsetLeft);
         /** ENEMY MOTION */
-          enemyOffsetTop += dy;
-          enemyOffsetLeft += dx;
+         enemyOffsetTop += dy;
+         enemyOffsetLeft += dx;
           enemies[c][r].x = enemyX;
           enemies[c][r].y = enemyY;
           ctx.beginPath();
@@ -104,17 +114,37 @@ function drawEnemies()
           ctx.fillStyle = "#0095DD";
           ctx.fill();
           ctx.closePath(); 
-         
-
       }
     }
   }
 }
 
+function resetEnemies()
+{
+   for(c = 0; c < enemyColumnCount; c++)
+  {
+    for(r = 0; r < enemyRowCount; r++)
+    {
+      var enem = enemies[c][r];
+      console.log(enem);
+
+      // Set status to 0
+      enem.status = 1;
+
+      // Reset enemy starting coordinates
+      enemyOffsetTop = 90;
+      enemyOffsetLeft = 155;
+
+      var enemyX = (r*(enemyWidth+enemyPadding)) + enemyOffsetLeft;
+        var enemyY = (c*(enemyHeight+enemyPadding)) + enemyOffsetTop;
+      enemies[c][r].x = enemyX;
+      enemies[c][r].y = enemyY;
+    }
+  }
+}
 
 function collisionDetection()
 {
-
   /** BULLET */
   if(startY < 0)
   {
@@ -127,7 +157,6 @@ function collisionDetection()
   }
 
   /** SHIP (w/WALLS) */
-
   if(shipX < 0)
   {
     leftPressed = false;
@@ -136,7 +165,6 @@ function collisionDetection()
   {
     downPressed = false;  
   }
-
 
 }
 
@@ -159,6 +187,9 @@ function enemyCollision()
           spaceCount = 0;
           x = shipX + 30;
           y = shipY;
+          score++;
+          enemyKills++;
+
 
           // FIXED tthe collision of an already fired/collided ball registering for oncoming enemies to trigger a hit
           startX = x;
@@ -191,8 +222,8 @@ shipImage.src = "images/speedship.png";
 
 var shipX = (canvas.width / 2) - 30;
 var shipY = canvas.height  - 100;
-console.log("Ship X: " + shipX);
-console.log("Ship Y: " + shipY);
+// console.log("Ship X: " + shipX);
+// console.log("Ship Y: " + shipY);
 
 var shipWidth = 60;
 var shipHeight = 75;
@@ -202,8 +233,8 @@ var shipHeight = 75;
 //buller coordinates
 var x = shipX + 30;
 var y = shipY;
-console.log("X: " + x);
-console.log("y: " + y);
+//console.log("X: " + x);
+// console.log("y: " + y);
  // add a small value to x and y after every frame has been drawn to make it appear that the ball is moving.
 var dx = 5;  // may not need this
 var dy = -28;
@@ -227,16 +258,32 @@ var render = function (){
   }
 
   if(shoot) {
-      console.log("Drawing ball....");
+      //console.log("Drawing ball....");
       drawBall(); 
     }
 
   enemyCollision();
-  drawEnemies();
+
+  if(enemyKills <= 6)
+  {
+    drawEnemies(); 
+  }
+
+  if(enemyKills === 6)
+  {
+    //console.log("INSIDE the RESET");
+    enemyKills = 0;
+    resetEnemies(); 
+    // drawEnemies();
+  }
+
+
+  drawScore();
   // console.log('Y: ' + y + ballRadius);
   // console.log("DY: " + dy);
 
   collisionDetection();
+
 
 };
 
@@ -252,27 +299,27 @@ function keyDownHandler(e)
 {
   if(e.keyCode == 39)  // keyCode 39 is the right cursor
   {
-    console.log("right");
+    //console.log("right");
     rightPressed = true;
   }
   else if(e.keyCode == 37)  // keycode 37 is left
   {
-    console.log("left");
+    //console.log("left");
     leftPressed = true;
   }
   else if(e.keyCode == 38)
   {
-    console.log("up");
+    //console.log("up");
     upPressed = true;
   }
   else if(e.keyCode == 40)
   {
-    console.log("shipY: " + shipY);
+    //console.log("shipY: " + shipY);
     downPressed = true;
   }
   else if(e.keyCode == 32)
   {
-    console.log("SPACE");
+    //console.log("SPACE");
     spaceCount++;
     spacePressed = true;
     fireCount++;
@@ -371,9 +418,9 @@ function drawBall()
   if(fireCount === 1){
     startX = x;
     startY = y;
-    console.log("Firecount", fireCount);
-    console.log("startX", startX);
-    console.log("startY", startY);
+    //console.log("Firecount", fireCount);
+    //console.log("startX", startX);
+    //console.log("startY", startY);
     ctx.arc(x,y,ballRadius,0, Math.PI*2);  
     ctx.fillStyle = color;
     ctx.fill();
@@ -393,6 +440,15 @@ function drawBall()
     startY += dy;
   } 
 }
+
+function drawScore()
+{
+  ctx.font = "16px Arial"; // sets size and font type
+  ctx.fillStyle = "#0095DD"; // color of text
+  ctx.fillText("Score: " + score, 8, 20);  //.fillText(text, coordX,coordY)
+}
+
+
 
 
 
