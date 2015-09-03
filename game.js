@@ -108,26 +108,11 @@ var dy = -28;
 var enemyWidth = 20;
 var enemyHeight = 20;
 var enemyPadding = 10;
-var enemyOffsetTop = 90;
-var enemyOffsetLeft = 155;
+var enemyOffsetTop = 5;
+var enemyOffsetLeft = 5;
 
 /** Holds all the enemies in a 2-d array
   each enemy will create an object with x/y coords */
-
-
-
-/** ENEMIES */
-
-// // Loops thru the rows and columns and create new enemies
-// var enemies = [];
-
-// for(c = 0; c < enemyColumnCount;c++){
-//   enemies[c] = [];
-
-//   for(r = 0; r < enemyRowCount; r++){
-//     enemies[c][r] = {x: 0, y:0, status: 1}; // status --> aids in enemies dissapearing
-//   } // if status = 0, don't repaint this brick
-// }
 
 
 // Enemy object
@@ -140,23 +125,26 @@ function Enemy(x,y, width, height, status)
   this.status = status;
 }
 
- var objectX = 25;
-  var objectY = 30;
 
+  var randomX = Math.floor(Math.random() * (460 - 20) + 20);
+  var randomY = Math.floor(Math.random() * (225 - 0) + 0);
+
+
+// NEED HELP WITH RANDOM CREATION coordinates
 function createRandomEnemy()
 {
-  objectX += 5;
-  objectY += 5;
-  enemyObjects.push(new Enemy(objectX,objectY, 20, 20, 1));
-  enemyObjects.push(new Enemy(objectX + 30, objectY + 50, 20, 20, 1));
-  enemyObjects.push(new Enemy(objectX + 100, objectY + 50, 20, 20, 1));
-  enemyObjects.push(new Enemy(objectX + 70, objectY + 50, 20, 20, 1));
+  var randomX = Math.floor(Math.random() * ((canvasWidth - 20) - 20)) + 20;
+  var randomY = Math.floor(Math.random() * (((canvasHeight/2) + 30) - 0));
+ 
+  // enemyObjects.push(new Enemy(objectX,objectY, 20, 20, 1));
+  enemyObjects.push(new Enemy(randomX - enemyOffsetLeft, randomY - enemyOffsetTop,20,20, 1)); 
+
+  // console.log("Enemy X: " + randomX);
+  // console.log("Enemy Y: " + randomY);
+
 }
 
-
 var enemyObjects = [];
-
-
 
 function drawEnemyObjects()
 {
@@ -165,6 +153,7 @@ function drawEnemyObjects()
 
   // defined outside of the for-loop to keep a consistent speed
   //defining inside the for-loop will slow speed down per kill
+
   enemyOffsetLeft += dx;
   enemyOffsetTop += dy;
   for(var i = 0; i < enemyObjects.length; i++)
@@ -192,42 +181,7 @@ function drawEnemyObjects()
           ctx.closePath(); 
       }
   }
-
- 
-
 }
-
-// function drawEnemies(dx,dy,currentX,currentY)
-// {
-//   //dx = -0.10;
-//   dy = 0.10;
-//   for(c = 0; c < enemyColumnCount; c++)
-//   {
-//     for(r=0; r < enemyRowCount; r++)
-//     {
-//       if(enemies[c][r].status == 1) //checks to see if enemy hasn't been hit (1), rewrite
-//       {
-//         // Calculation to set x/y coords for each enemy (so they won't stack on eachother)
-//         var enemyX = (r*(enemyWidth+enemyPadding)) + enemyOffsetLeft;
-//         var enemyY = (c*(enemyHeight+enemyPadding)) + enemyOffsetTop;
-
-//         // console.log("Drawing enemies..");
-//         // console.log("Top: " + enemyOffsetTop);
-//         // console.log("Left: " + enemyOffsetLeft);
-//         /** ENEMY MOTION */
-//          enemyOffsetTop += dy;
-//         // enemyOffsetLeft += dx;
-//           enemies[c][r].x = enemyX;
-//           enemies[c][r].y = enemyY;
-//           ctx.beginPath();
-//           ctx.rect(enemyX,enemyY,enemyWidth,enemyHeight);
-//           ctx.fillStyle = "#0095DD";
-//           ctx.fill();
-//           ctx.closePath(); 
-//       }
-//     }
-//   }
-// }
 
 
 // Reset all enemy objects in their starting locations
@@ -238,11 +192,13 @@ function resetEnemies()
       var enem = enemyObjects[r];
    
       // Reset enemy starting coordinates
-      enemyOffsetTop = 90;
-      enemyOffsetLeft = 155;
+      enemyOffsetTop = 1;
+      enemyOffsetLeft = 1;
 
       // Set status to 0
       enem.status = 1;
+
+      enemyObjects.pop();
 
       // var enemyX = (enem.x);
       // var enemyY = (enem.y); 
@@ -310,6 +266,7 @@ function enemyCollision()
           y = shipY;
           score++;
           enemyKills++;
+          createRandomEnemy();
 
           // FIXED tthe collision of an already fired/collided ball registering for oncoming enemies to trigger a hit
           startX = x;
@@ -332,8 +289,8 @@ function enemyCollision()
     }
   }
 
-
-createRandomEnemy();
+var enemyCounter = 0;
+// createRandomEnemy();
 var render = function (){
 
   /** MAKING IT MOVE */
@@ -360,12 +317,16 @@ var render = function (){
   enemyCollision();
 
   drawEnemyObjects(); 
+
+  if(counter % 5 === 0 && enemyCounter < 10)
+  {
+    createRandomEnemy();
+    enemyCounter++;
+
+  }
   
 
-  if(enemyKills === 4){
-    resetEnemies();
-    enemyKills++;
-  }
+ 
 
 
   drawScore();
@@ -407,7 +368,7 @@ function keyDownHandler(e)
   }
   else if(e.keyCode == 40 && shipY < canvasHeight - shipHeight)
   {
-    console.log("Ship Y: " + shipY);
+    //console.log("Ship Y: " + shipY);
     //console.log("shipY: " + shipY);
     downPressed = true;
   }
@@ -425,7 +386,7 @@ function keyUpHandler(e)  // e --> event
 {
   if(e.keyCode == 39)
   {
-    console.log("right off!");
+   // console.log("right off!");
     rightPressed = false;
   }
   else if(e.keyCode == 37)
@@ -479,6 +440,8 @@ var update = function(mod)
 };
 
 /** THE MAIN GAME LOOP */
+var seconds;
+var counter = 0;
 
 var main = function ()
 {
@@ -487,7 +450,17 @@ var main = function ()
 
   if(!end)
   {
-    //console.log(now);
+    
+
+    if(seconds != Math.round(now/1000))
+    {
+      seconds = Math.round(now/1000);
+      counter++;
+    }
+
+
+    console.log(seconds);
+    console.log(counter);
     update(delta / 10000);
     render();
 
