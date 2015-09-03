@@ -60,9 +60,6 @@ console.log("Canvas Width: " + canvasWidth);
 
 /** ENEMIES */
 
-
-
-
 /** SCORE/MENU */
 
 var score = 0;
@@ -320,8 +317,6 @@ var render = function (){
       drawBall(); 
     }
 
- //console.log(enemyObjects[0]);
-
   collisionDetection();
   
   enemyCollision();
@@ -335,15 +330,11 @@ var render = function (){
 
   }
   
-
- 
-
-
   drawScore();
   // console.log('Y: ' + y + ballRadius);
   // console.log("DY: " + dy);
 
-  if(score == 12)
+  if(score == 20)
   {
     end = true;
     win();
