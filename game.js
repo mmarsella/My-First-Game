@@ -55,29 +55,7 @@ console.log("Canvas Width: " + canvasWidth);
 
 /** ENEMIES */
 
-/** ENEMY VARIABLES */
 
-var enemyRowCount = 3;
-var enemyColumnCount = 3;
-var enemyWidth = 20;
-var enemyHeight = 20;
-var enemyPadding = 10;
-var enemyOffsetTop = 90;
-var enemyOffsetLeft = 155;
-
-/** Holds all the bricks in a 2-d array
-  each brick will create an object with x/y coords */
-
-// Loops thru the rows and columns and create new enemies
-var enemies = [];
-
-for(c = 0; c < enemyColumnCount;c++){
-  enemies[c] = [];
-
-  for(r = 0; r < enemyRowCount; r++){
-    enemies[c][r] = {x: 0, y:0, status: 1}; // status --> aids in enemies dissapearing
-  } // if status = 0, don't repaint this brick
-}
 
 
 /** SCORE/MENU */
@@ -123,6 +101,44 @@ var y = shipY;
 var dx = 5;  // may not need this
 var dy = -28;
 
+/** ENEMY VARIABLES */
+
+var enemyRowCount = 1;
+var enemyColumnCount = 1;
+var enemyWidth = 20;
+var enemyHeight = 20;
+var enemyPadding = 10;
+var enemyOffsetTop = 90;
+var enemyOffsetLeft = 155;
+
+/** Holds all the enemies in a 2-d array
+  each enemy will create an object with x/y coords */
+
+
+
+/** ENEMIES */
+
+// Loops thru the rows and columns and create new enemies
+var enemies = [];
+
+for(c = 0; c < enemyColumnCount;c++){
+  enemies[c] = [];
+
+  for(r = 0; r < enemyRowCount; r++){
+    enemies[c][r] = {x: 0, y:0, status: 1}; // status --> aids in enemies dissapearing
+  } // if status = 0, don't repaint this brick
+}
+
+
+
+
+
+var enemyObjects = [];
+
+for(i = 0; i < enemyObjects.length; i++)
+{
+
+}
 
 function drawEnemies(dx,dy,currentX,currentY)
 {
@@ -264,7 +280,6 @@ var render = function (){
     
     // this is making the ball disappear 
     ctx.clearRect(0,0, canvas.width, canvas.height);
-
       
   if(shipReady) {
     // if there is a ball redraw the ball
@@ -278,12 +293,13 @@ var render = function (){
 
   enemyCollision();
 
-  if(enemyKills <= 6)
+  if(enemyKills <= 1)
   {
     drawEnemies(); 
+    drawEnemies();
   }
 
-  if(enemyKills === 6)
+  if(enemyKills === 1)
   {
     //console.log("INSIDE the RESET");
     enemyKills = 0;
@@ -412,9 +428,9 @@ var main = function ()
   var now = Date.now();
   var delta = now - then;
 
-
   if(!end)
   {
+    //console.log(now);
     update(delta / 10000);
     render();
 
