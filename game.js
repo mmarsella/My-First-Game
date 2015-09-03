@@ -148,6 +148,9 @@ function createRandomEnemy()
   objectX += 5;
   objectY += 5;
   enemyObjects.push(new Enemy(objectX,objectY, 20, 20, 1));
+  enemyObjects.push(new Enemy(objectX + 30, objectY + 50, 20, 20, 1));
+  enemyObjects.push(new Enemy(objectX + 100, objectY + 50, 20, 20, 1));
+  enemyObjects.push(new Enemy(objectX + 70, objectY + 50, 20, 20, 1));
 }
 
 
@@ -157,8 +160,13 @@ var enemyObjects = [];
 
 function drawEnemyObjects()
 {
-  var dx = 0.10;
-  var dy = 0.50;
+  var dx = 0.60;
+  var dy = 0.0;
+
+  // defined outside of the for-loop to keep a consistent speed
+  //defining inside the for-loop will slow speed down per kill
+  enemyOffsetLeft += dx;
+  enemyOffsetTop += dy;
   for(var i = 0; i < enemyObjects.length; i++)
   {
 
@@ -173,8 +181,6 @@ function drawEnemyObjects()
         // console.log("Top: " + enemyOffsetTop);
         // console.log("Left: " + enemyOffsetLeft);
         /** ENEMY MOTION */
-         enemyOffsetLeft += dx;
-         enemyOffsetTop += dy;
         // enemyOffsetLeft += dx;
           // enemyObjects[i].x = enemyX;
           // enemyObjects[i].y = enemyY;
