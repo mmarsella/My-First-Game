@@ -92,13 +92,13 @@ var shipY = canvas.height  - 100;
 // console.log("Ship X: " + shipX);
 // console.log("Ship Y: " + shipY);
 
-var shipWidth = 60;
-var shipHeight = 75;
+var shipWidth = 40;
+var shipHeight = 55;
 
 canvas.style.background = "url('images/background.png')";
 
 //buller coordinates
-var x = shipX + 30;
+var x = shipX + 20;
 var y = shipY;
 //console.log("X: " + x);
 // console.log("y: " + y);
@@ -203,6 +203,7 @@ function resetEnemies()
       // Set status to 0
       enem.status = 1;
 
+      // clear my array of enemies
       enemyObjects.pop();
 
       // var enemyX = (enem.x);
@@ -211,7 +212,6 @@ function resetEnemies()
       // enemyObjects[r].y = enemyY;
     }
   }
-
 
 function collisionDetection()
 {
@@ -222,10 +222,9 @@ function collisionDetection()
     shoot = false;
     fireCount = 0;
     spaceCount = 0;
-    x = shipX + 30;
+    x = shipX + 20;
     y = shipY;
   }
-
 
   // Why won't my code work w/o this????
   /** SHIP (w/WALLS) */
@@ -464,7 +463,7 @@ var main = function ()
   if(!end)
   {
     
-
+    // Allows me to track seconds --> spawn new enemies/time elapsed
     if(seconds != Math.round(now/1000))
     {
       seconds = Math.round(now/1000);
