@@ -160,8 +160,8 @@ var enemyObjects = [];
 
 function drawEnemyObjects()
 {
-  var dx = 0.60;
-  var dy = 0.0;
+  var dx = 0.00;
+  var dy = 0.60;
 
   // defined outside of the for-loop to keep a consistent speed
   //defining inside the for-loop will slow speed down per kill
@@ -242,8 +242,8 @@ function resetEnemies()
       enemyOffsetTop = 90;
       enemyOffsetLeft = 155;
 
-      var enemyX = (3 * (enemyWidth+enemyPadding)) + enemyOffsetLeft;
-      var enemyY = (3 * (enemyHeight+enemyPadding)) + enemyOffsetTop;
+      var enemyX = (enemies.x + enemyOffsetLeft);
+      var enemyY = (enemies.y + enemyOffsetTop);
       enemyObjects[r].x = enemyX;
       enemyObjects[r].y = enemyY;
     }
@@ -315,7 +315,7 @@ function enemyCollision()
           startY = y;
         }
         // Enemy touches bottom of canvas
-        else if(enem.y > canvasHeight - enem.height)
+        else if((enem.y + enemyOffsetTop) > canvasHeight - enem.height)
         {
           end = true;
           lose();
@@ -363,12 +363,10 @@ var render = function (){
     drawEnemyObjects(); 
   
 
-  // if(enemyKills === 5)
-  // {
-  //   //console.log("INSIDE the RESET");
-  //   enemyKills = 0;
-  //   resetEnemies(); 
-  // }
+  if(score === 4){
+    end = true;
+    win();
+  }
 
 
   drawScore();
