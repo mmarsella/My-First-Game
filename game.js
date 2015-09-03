@@ -142,6 +142,7 @@ function Enemy(x,y, width, height, status)
 
  var objectX = 25;
   var objectY = 30;
+
 function createRandomEnemy()
 {
   objectX += 5;
@@ -273,6 +274,8 @@ function collisionDetection()
   }
 
 }
+
+//if(startX + ballRadius > enem.x && startX - ballRadius < enem.x + enemyWidth && startY + ballRadius > enem.y && startY - ballRadius < enem.y + enemyHeight)
 function enemyCollision()
 {
     
@@ -281,11 +284,13 @@ function enemyCollision()
       var enem = enemyObjects[r];
       if(enem.status == 1)
       {
-          console.log("startX + ballRadius: " + startX+ballRadius);
-          console.log("enem.x: " + enem.x);
-          console.log("enemy width:" + enemyWidth);
-          console.log("enemy object width:" + enem.width);
-        if(startX + ballRadius > enem.x && startX - ballRadius < enem.x + enem.width && startY + ballRadius > enem.y && startY - ballRadius < enem.y + enem.height)
+        console.log("offsetleft: " + enemyOffsetLeft);
+          //console.log(enem);
+          // console.log("startX + ballRadius: " + startX+ballRadius);
+          // console.log("enem.x: " + enem.x);
+          // console.log("enemy width:" + enemyWidth);
+          // console.log("enemy object width:" + enem.width);
+        if(startX + ballRadius > enem.x + enemyOffsetLeft && startX - ballRadius < (enem.x + enemyOffsetLeft) + enem.width && startY + ballRadius > enem.y + enemyOffsetTop && startY - ballRadius < (enem.y + enemyOffsetTop) + enem.height)
         {
 
           console.log("HIT!");
@@ -304,7 +309,7 @@ function enemyCollision()
           startY = y;
         }
         // Enemy touches bottom of canvas
-        else if(enem.y > canvasHeight - enemyHeight)
+        else if(enem.y > canvasHeight - enem.height)
         {
           end = true;
           lose();
