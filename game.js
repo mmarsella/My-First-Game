@@ -20,6 +20,11 @@ $(document).bind('scroll',function () {
 
 var canvas = document.getElementById("myCanvas");
 
+var shootAudio = document.getElementById("shoot");
+var explosionAudio = document.getElementById("explosion");
+var arcadeLoop = document.getElementById("arcadeLoop");
+
+
 // stores all 2d rendering
 var ctx = canvas.getContext("2d");
 
@@ -99,7 +104,7 @@ var y = shipY;
 // console.log("y: " + y);
  // add a small value to x and y after every frame has been drawn to make it appear that the ball is moving.
 var dx = 5;  // may not need this
-var dy = -28;
+var dy = -38;
 
 /** ENEMY VARIABLES */
 
@@ -266,6 +271,7 @@ function enemyCollision()
           y = shipY;
           score++;
           enemyKills++;
+          explosionAudio.play();
           createRandomEnemy();
 
           // FIXED tthe collision of an already fired/collided ball registering for oncoming enemies to trigger a hit
@@ -292,6 +298,11 @@ function enemyCollision()
 var enemyCounter = 0;
 // createRandomEnemy();
 var render = function (){
+
+  if(!end)
+  {
+    arcadeLoop.play();
+  }
 
   /** MAKING IT MOVE */
     // Clears the screen
@@ -375,6 +386,7 @@ function keyDownHandler(e)
   else if(e.keyCode == 32)
   {
     //console.log("SPACE");
+    shootAudio.play();
     spaceCount++;
     spacePressed = true;
     fireCount++;
@@ -403,6 +415,7 @@ function keyUpHandler(e)  // e --> event
   }
   else if(e.keyCode == 32)
   {
+    
     spacePressed = !spacePressed;
   }
 }
@@ -459,8 +472,8 @@ var main = function ()
     }
 
 
-    console.log(seconds);
-    console.log(counter);
+    // console.log(seconds);
+    // console.log(counter);
     update(delta / 10000);
     render();
 
@@ -519,6 +532,7 @@ function drawScore()
 
 function win()
 {
+  arcadeLoop.pause();
   ctx.font = "30px Arial";
   ctx.fillStyle = "white";
   ctx.fillText("YOU WIN!!!", 160, 100);
@@ -526,6 +540,7 @@ function win()
 
 function lose()
 {
+  arcadeLoop.pause();
   ctx.font = "30px Arial";
   ctx.fillStyle = "white";
   ctx.fillText("YOU LOSE", 160, 100);
