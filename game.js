@@ -18,11 +18,18 @@ $(document).bind('scroll',function () {
     window.scrollTo(0,0); 
   });
 
+//Reset button
+$("#button").on("click", function(){
+
+reset();
+console.log("RESET");
+});
+
 var canvas = document.getElementById("myCanvas");
 
 var shootAudio = document.getElementById("shoot");
 var explosionAudio = document.getElementById("explosion");
-var arcadeLoop = document.getElementById("arcadeLoop");
+//var arcadeLoop = document.getElementById("arcadeLoop");
 
 
 // stores all 2d rendering
@@ -85,7 +92,7 @@ shipImage.onload = function () {
 shipImage.src = "images/speedship.png";
 
 var shipX = (canvas.width / 2) - 30;
-var shipY = canvas.height  - 100;
+var shipY = canvas.height  - 50;
 // console.log("Ship X: " + shipX);
 // console.log("Ship Y: " + shipY);
 
@@ -243,7 +250,6 @@ function collisionDetection()
 //if(startX + ballRadius > enem.x && startX - ballRadius < enem.x + enemyWidth && startY + ballRadius > enem.y && startY - ballRadius < enem.y + enemyHeight)
 function enemyCollision()
 {
-    
     for(r = 0; r < enemyObjects.length; r++)
     {
       var enem = enemyObjects[r];
@@ -297,9 +303,8 @@ var render = function (){
 
   if(!end)
   {
-    arcadeLoop.play();
+    //arcadeLoop.play();
   }
-
   /** MAKING IT MOVE */
     // Clears the screen
     // 4 params: x/y of bottom right corners of a rect. --> whole area will be cleared of any content painted
@@ -334,7 +339,7 @@ var render = function (){
   // console.log('Y: ' + y + ballRadius);
   // console.log("DY: " + dy);
 
-  if(score == 20)
+  if(score == 40)
   {
     end = true;
     win();
@@ -343,7 +348,6 @@ var render = function (){
 };
 
 /** UPDATE THE SPACESHIP MOVEMENTS */
-
 
 //Listens for keys
 document.addEventListener("keydown", keyDownHandler, false);
@@ -522,7 +526,7 @@ function drawScore()
 
 function win()
 {
-  arcadeLoop.pause();
+  //arcadeLoop.pause();
   ctx.font = "30px Arial";
   ctx.fillStyle = "white";
   ctx.fillText("YOU WIN!!!", 160, 100);
@@ -530,7 +534,7 @@ function win()
 
 function lose()
 {
-  arcadeLoop.pause();
+  //arcadeLoop.pause();
   ctx.font = "30px Arial";
   ctx.fillStyle = "white";
   ctx.fillText("YOU LOSE", 160, 100);
@@ -541,6 +545,13 @@ function dead()
   ctx.font = "30px Arial";
   ctx.fillStyle = "white";
   ctx.fillText("You've been HIT!",160,100);
+}
+
+function reset()
+{
+  console.log("RESET");
+  end = false;
+  document.location.reload();  // reloads the page
 }
 
 
