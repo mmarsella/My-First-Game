@@ -103,8 +103,8 @@ var dy = -28;
 
 /** ENEMY VARIABLES */
 
-var enemyRowCount = 1;
-var enemyColumnCount = 1;
+// var enemyRowCount = 1;
+// var enemyColumnCount = 1;
 var enemyWidth = 20;
 var enemyHeight = 20;
 var enemyPadding = 10;
@@ -118,68 +118,115 @@ var enemyOffsetLeft = 155;
 
 /** ENEMIES */
 
-// Loops thru the rows and columns and create new enemies
-var enemies = [];
+// // Loops thru the rows and columns and create new enemies
+// var enemies = [];
 
-for(c = 0; c < enemyColumnCount;c++){
-  enemies[c] = [];
+// for(c = 0; c < enemyColumnCount;c++){
+//   enemies[c] = [];
 
-  for(r = 0; r < enemyRowCount; r++){
-    enemies[c][r] = {x: 0, y:0, status: 1}; // status --> aids in enemies dissapearing
-  } // if status = 0, don't repaint this brick
+//   for(r = 0; r < enemyRowCount; r++){
+//     enemies[c][r] = {x: 0, y:0, status: 1}; // status --> aids in enemies dissapearing
+//   } // if status = 0, don't repaint this brick
+// }
+
+
+// Enemy object
+function Enemy(x,y, width, height, status)
+{
+  this.x = x;
+  this.y = y;
+  this.width = width;
+  this.height = height;
+  this.status = status;
 }
 
-
-
+ var objectX = 25;
+  var objectY = 30;
+function createRandomEnemy()
+{
+  objectX += 5;
+  objectY += 5;
+  enemyObjects.push(new Enemy(objectX,objectY, 20, 20, 1));
+}
 
 
 var enemyObjects = [];
 
-for(i = 0; i < enemyObjects.length; i++)
-{
 
-}
 
-function drawEnemies(dx,dy,currentX,currentY)
+function drawEnemyObjects()
 {
-  //dx = -0.10;
-  dy = 0.10;
-  for(c = 0; c < enemyColumnCount; c++)
+  var dx = 0.10;
+  var dy = 0.50;
+  for(var i = 0; i < enemyObjects.length; i++)
   {
-    for(r=0; r < enemyRowCount; r++)
-    {
-      if(enemies[c][r].status == 1) //checks to see if enemy hasn't been hit (1), rewrite
+
+   if(enemyObjects[i].status == 1) //checks to see if enemy hasn't been hit (1), rewrite
       {
         // Calculation to set x/y coords for each enemy (so they won't stack on eachother)
-        var enemyX = (r*(enemyWidth+enemyPadding)) + enemyOffsetLeft;
-        var enemyY = (c*(enemyHeight+enemyPadding)) + enemyOffsetTop;
-
+        // var enemyX = ( i * (enemyWidth+enemyPadding)) + enemyOffsetLeft;
+        // var enemyY = (i * (enemyHeight+enemyPadding)) + enemyOffsetTop;
+        var enemyX = (enemyObjects[i].x + enemyOffsetLeft);
+        var enemyY = (enemyObjects[i].y + enemyOffsetTop);
         // console.log("Drawing enemies..");
         // console.log("Top: " + enemyOffsetTop);
         // console.log("Left: " + enemyOffsetLeft);
         /** ENEMY MOTION */
+         enemyOffsetLeft += dx;
          enemyOffsetTop += dy;
         // enemyOffsetLeft += dx;
-          enemies[c][r].x = enemyX;
-          enemies[c][r].y = enemyY;
+          // enemyObjects[i].x = enemyX;
+          // enemyObjects[i].y = enemyY;
           ctx.beginPath();
           ctx.rect(enemyX,enemyY,enemyWidth,enemyHeight);
+          //console.log("Enemy X: " + enemyX);
           ctx.fillStyle = "#0095DD";
           ctx.fill();
           ctx.closePath(); 
       }
-    }
   }
+
+ 
+
 }
+
+// function drawEnemies(dx,dy,currentX,currentY)
+// {
+//   //dx = -0.10;
+//   dy = 0.10;
+//   for(c = 0; c < enemyColumnCount; c++)
+//   {
+//     for(r=0; r < enemyRowCount; r++)
+//     {
+//       if(enemies[c][r].status == 1) //checks to see if enemy hasn't been hit (1), rewrite
+//       {
+//         // Calculation to set x/y coords for each enemy (so they won't stack on eachother)
+//         var enemyX = (r*(enemyWidth+enemyPadding)) + enemyOffsetLeft;
+//         var enemyY = (c*(enemyHeight+enemyPadding)) + enemyOffsetTop;
+
+//         // console.log("Drawing enemies..");
+//         // console.log("Top: " + enemyOffsetTop);
+//         // console.log("Left: " + enemyOffsetLeft);
+//         /** ENEMY MOTION */
+//          enemyOffsetTop += dy;
+//         // enemyOffsetLeft += dx;
+//           enemies[c][r].x = enemyX;
+//           enemies[c][r].y = enemyY;
+//           ctx.beginPath();
+//           ctx.rect(enemyX,enemyY,enemyWidth,enemyHeight);
+//           ctx.fillStyle = "#0095DD";
+//           ctx.fill();
+//           ctx.closePath(); 
+//       }
+//     }
+//   }
+// }
 
 function resetEnemies()
 {
-   for(c = 0; c < enemyColumnCount; c++)
-  {
-    for(r = 0; r < enemyRowCount; r++)
+    for(r = 0; r < enemyObjects.length; r++)
     {
-      var enem = enemies[c][r];
-      console.log(enem);
+      var enem = enemyObjects[r];
 
       // Set status to 0
       enem.status = 1;
@@ -188,20 +235,20 @@ function resetEnemies()
       enemyOffsetTop = 90;
       enemyOffsetLeft = 155;
 
-      var enemyX = (r*(enemyWidth+enemyPadding)) + enemyOffsetLeft;
-      var enemyY = (c*(enemyHeight+enemyPadding)) + enemyOffsetTop;
-      enemies[c][r].x = enemyX;
-      enemies[c][r].y = enemyY;
+      var enemyX = (3 * (enemyWidth+enemyPadding)) + enemyOffsetLeft;
+      var enemyY = (3 * (enemyHeight+enemyPadding)) + enemyOffsetTop;
+      enemyObjects[r].x = enemyX;
+      enemyObjects[r].y = enemyY;
     }
   }
-}
+
 
 function collisionDetection()
 {
   /** BULLET */
   if(startY < 0)
   {
-  console.log("DETECTING...");
+  //console.log("DETECTING...");
     shoot = false;
     fireCount = 0;
     spaceCount = 0;
@@ -226,19 +273,21 @@ function collisionDetection()
   }
 
 }
-
 function enemyCollision()
 {
-  for(c = 0; c < enemyColumnCount; c++)
-  {
-    for(r = 0; r < enemyRowCount; r++)
+    
+    for(r = 0; r < enemyObjects.length; r++)
     {
-      var enem = enemies[c][r];
-
+      var enem = enemyObjects[r];
       if(enem.status == 1)
       {
-        if(startX + ballRadius > enem.x && startX - ballRadius < enem.x + enemyWidth && startY + ballRadius > enem.y && startY - ballRadius < enem.y + enemyHeight)
+          console.log("startX + ballRadius: " + startX+ballRadius);
+          console.log("enem.x: " + enem.x);
+          console.log("enemy width:" + enemyWidth);
+          console.log("enemy object width:" + enem.width);
+        if(startX + ballRadius > enem.x && startX - ballRadius < enem.x + enem.width && startY + ballRadius > enem.y && startY - ballRadius < enem.y + enem.height)
         {
+
           console.log("HIT!");
           enem.status = 0;  // Mark as a hit
           shoot = false;
@@ -270,8 +319,9 @@ function enemyCollision()
       }
     }
   }
-}
 
+
+createRandomEnemy();
 var render = function (){
 
   /** MAKING IT MOVE */
@@ -291,21 +341,23 @@ var render = function (){
       drawBall(); 
     }
 
+
+
+
+ //console.log(enemyObjects[0]);
+
+  collisionDetection();
+  
   enemyCollision();
+    drawEnemyObjects(); 
+  
 
-  if(enemyKills <= 1)
-  {
-    drawEnemies(); 
-    drawEnemies();
-  }
-
-  if(enemyKills === 1)
-  {
-    //console.log("INSIDE the RESET");
-    enemyKills = 0;
-    resetEnemies(); 
-    drawEnemies();
-  }
+  // if(enemyKills === 5)
+  // {
+  //   //console.log("INSIDE the RESET");
+  //   enemyKills = 0;
+  //   resetEnemies(); 
+  // }
 
 
   drawScore();
@@ -318,7 +370,6 @@ var render = function (){
     win();
   }
 
-  collisionDetection();
 
 
 };
