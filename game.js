@@ -229,23 +229,25 @@ function drawEnemyObjects()
 //   }
 // }
 
+
+// Reset all enemy objects in their starting locations
 function resetEnemies()
 {
     for(r = 0; r < enemyObjects.length; r++)
     {
       var enem = enemyObjects[r];
-
-      // Set status to 0
-      enem.status = 1;
-
+   
       // Reset enemy starting coordinates
       enemyOffsetTop = 90;
       enemyOffsetLeft = 155;
 
-      var enemyX = (enemies.x + enemyOffsetLeft);
-      var enemyY = (enemies.y + enemyOffsetTop);
-      enemyObjects[r].x = enemyX;
-      enemyObjects[r].y = enemyY;
+      // Set status to 0
+      enem.status = 1;
+
+      // var enemyX = (enem.x);
+      // var enemyY = (enem.y); 
+      // enemyObjects[r].x = enemyX;
+      // enemyObjects[r].y = enemyY;
     }
   }
 
@@ -290,7 +292,8 @@ function enemyCollision()
       var enem = enemyObjects[r];
       if(enem.status == 1)
       {
-        console.log("offsetleft: " + enemyOffsetLeft);
+        // console.log("offsetleft: " + enemyOffsetLeft);
+        // console.log("offsetTop: " + enemyOffsetTop);
           //console.log(enem);
           // console.log("startX + ballRadius: " + startX+ballRadius);
           // console.log("enem.x: " + enem.x);
@@ -298,7 +301,6 @@ function enemyCollision()
           // console.log("enemy object width:" + enem.width);
         if(startX + ballRadius > enem.x + enemyOffsetLeft && startX - ballRadius < (enem.x + enemyOffsetLeft) + enem.width && startY + ballRadius > enem.y + enemyOffsetTop && startY - ballRadius < (enem.y + enemyOffsetTop) + enem.height)
         {
-
           console.log("HIT!");
           enem.status = 0;  // Mark as a hit
           shoot = false;
@@ -308,7 +310,6 @@ function enemyCollision()
           y = shipY;
           score++;
           enemyKills++;
-
 
           // FIXED tthe collision of an already fired/collided ball registering for oncoming enemies to trigger a hit
           startX = x;
@@ -352,20 +353,18 @@ var render = function (){
       drawBall(); 
     }
 
-
-
-
  //console.log(enemyObjects[0]);
 
   collisionDetection();
   
   enemyCollision();
-    drawEnemyObjects(); 
+
+  drawEnemyObjects(); 
   
 
-  if(score === 4){
-    end = true;
-    win();
+  if(enemyKills === 4){
+    resetEnemies();
+    enemyKills++;
   }
 
 
@@ -378,8 +377,6 @@ var render = function (){
     end = true;
     win();
   }
-
-
 
 };
 
