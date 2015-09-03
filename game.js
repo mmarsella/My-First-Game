@@ -278,12 +278,12 @@ var render = function (){
 
   enemyCollision();
 
-  if(enemyKills <= 6)
+  if(enemyKills <= 9)
   {
     drawEnemies(); 
   }
 
-  if(enemyKills === 6)
+  if(enemyKills === 9)
   {
     //console.log("INSIDE the RESET");
     enemyKills = 0;
@@ -324,7 +324,7 @@ function keyDownHandler(e)
   }
   else if(e.keyCode == 37  && shipX > 0)  // keycode 37 is left
   {
-    //console.log("left");
+    console.log("X: " + shipX);
     leftPressed = true;
   }
   else if(e.keyCode == 38 && shipY > 0)
@@ -415,7 +415,7 @@ var main = function ()
 
   if(!end)
   {
-    update(delta / 10000);
+    update(delta / 1000);
     render();
 
     then = now;
@@ -493,9 +493,18 @@ function dead()
 }
 
 
+/**  TO DO 
+
+
+- Generate enemies based off of math.random + setTimout
+
+- drawEnemies(passRandom x,y coordinates in);
+
+- make sure coordinates are within upper half of canvas
 
 
 
+*/
 
 
 
