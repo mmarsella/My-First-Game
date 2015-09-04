@@ -19,6 +19,6 @@ button
 {
   height: 700px;
   width: 480px;
-  background-color: white;
+  background-image: url("images/background.png");
   margin: auto;
 }

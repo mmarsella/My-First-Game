@@ -13,7 +13,7 @@
 
 
 //Hide Everything
-// $("canvas").css("visibility", "visible");
+$("canvas").css("visibility", "hidden");
 $("button").css("visibility","hidden");
 
 var startMenu = $("#startMenu")[0],
@@ -31,12 +31,7 @@ var startMenu = $("#startMenu")[0],
 
 
 
-// setTimeout(function(){
 
-// $("canvas").css("visibility","visible");
-
-
-// },1000);
 
 
 // if($("canvas").css("visibility") != "hidden")  
@@ -48,6 +43,9 @@ var startMenu = $("#startMenu")[0],
 // }
 
   $("#startMenu").fadeOut("slow", function() {
+    $("button").css("visibility","hidden");
+    $("canvas").css("visibility", "visible");
+$("button").css("visibility","visible");
     game();
   });
 
