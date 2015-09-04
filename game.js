@@ -81,7 +81,8 @@ console.log("RESET");
 
 var shootAudio = document.getElementById("shoot");
 var explosionAudio = document.getElementById("explosion");
-//var arcadeLoop = document.getElementById("arcadeLoop");
+var arcadeLoop = document.getElementById("arcadeLoop");
+var gameOver = document.getElementById("gameOver");
 
 
 // stores all 2d rendering
@@ -354,7 +355,7 @@ var render = function (){
 
   if(!end)
   {
-    //arcadeLoop.play();
+    arcadeLoop.play();
   }
   /** MAKING IT MOVE */
     // Clears the screen
@@ -390,7 +391,7 @@ var render = function (){
   // console.log('Y: ' + y + ballRadius);
   // console.log("DY: " + dy);
 
-  if(score == 40)
+  if(score == 15)
   {
     end = true;
     win();
@@ -574,7 +575,9 @@ function drawScore()
 
 function win()
 {
-  //arcadeLoop.pause();
+  arcadeLoop.pause();
+  gameOver.setAttribute("src","sound/success.wav");
+  gameOver.play();
   ctx.font = "30px Arial";
   ctx.fillStyle = "white";
   ctx.fillText("YOU WIN!!!", 160, 100);
@@ -582,7 +585,9 @@ function win()
 
 function lose()
 {
-  //arcadeLoop.pause();
+  arcadeLoop.pause();
+  gameOver.setAttribute("src","sound/lose.wav"); //plays fx for paddle-hit
+  gameOver.play();
   ctx.font = "30px Arial";
   ctx.fillStyle = "white";
   ctx.fillText("YOU LOSE", 160, 100);
