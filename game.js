@@ -11,14 +11,70 @@
 
 */
 
-  //FREEZES WINDOW SCROLLING
 
+//Hide Everything
+// $("canvas").css("visibility", "visible");
+$("button").css("visibility","hidden");
+
+var startMenu = $("#startMenu")[0],
+    canvas = document.getElementById("myCanvas");
+
+// MAIN MENU
+
+// on start -- fade out div
+
+
+
+
+
+
+
+
+
+// setTimeout(function(){
+
+// $("canvas").css("visibility","visible");
+
+
+// },1000);
+
+
+// if($("canvas").css("visibility") != "hidden")  
+// {
+//   startMenu.fadeOut(function() {
+//     canvas.fadeIn();
+//   });
+//   game();
+// }
+
+  $("#startMenu").fadeOut("slow", function() {
+    game();
+  });
+
+
+function game(){
+
+
+//FREEZES WINDOW SCROLLING
 $('body').css({'overflow':'hidden'});
 $(document).bind('scroll',function () { 
     window.scrollTo(0,0); 
   });
 
-var canvas = document.getElementById("myCanvas");
+//Reset button
+$("#button").on("click", function(){
+
+reset();
+console.log("RESET");
+});
+
+
+//Toggle visibility of game
+
+var shootAudio = document.getElementById("shoot");
+var explosionAudio = document.getElementById("explosion");
+//var arcadeLoop = document.getElementById("arcadeLoop");
+
 
 // stores all 2d rendering
 var ctx = canvas.getContext("2d");
@@ -55,31 +111,6 @@ console.log("Canvas Width: " + canvasWidth);
 
 /** ENEMIES */
 
-/** ENEMY VARIABLES */
-
-var enemyRowCount = 3;
-var enemyColumnCount = 3;
-var enemyWidth = 20;
-var enemyHeight = 20;
-var enemyPadding = 10;
-var enemyOffsetTop = 90;
-var enemyOffsetLeft = 155;
-
-/** Holds all the bricks in a 2-d array
-  each brick will create an object with x/y coords */
-
-// Loops thru the rows and columns and create new enemies
-var enemies = [];
-
-for(c = 0; c < enemyColumnCount;c++){
-  enemies[c] = [];
-
-  for(r = 0; r < enemyRowCount; r++){
-    enemies[c][r] = {x: 0, y:0, status: 1}; // status --> aids in enemies dissapearing
-  } // if status = 0, don't repaint this brick
-}
-
-
 /** SCORE/MENU */
 
 var score = 0;
@@ -105,94 +136,143 @@ shipImage.onload = function () {
 shipImage.src = "images/speedship.png";
 
 var shipX = (canvas.width / 2) - 30;
-var shipY = canvas.height  - 100;
+var shipY = canvas.height  - 50;
 // console.log("Ship X: " + shipX);
 // console.log("Ship Y: " + shipY);
 
-var shipWidth = 60;
-var shipHeight = 75;
+var shipWidth = 40;
+var shipHeight = 55;
 
 canvas.style.background = "url('images/background.png')";
 
 //buller coordinates
-var x = shipX + 30;
+var x = shipX + 20;
 var y = shipY;
 //console.log("X: " + x);
 // console.log("y: " + y);
  // add a small value to x and y after every frame has been drawn to make it appear that the ball is moving.
 var dx = 5;  // may not need this
-var dy = -28;
+var dy = -38;
+
+/** ENEMY VARIABLES */
+
+// var enemyRowCount = 1;
+// var enemyColumnCount = 1;
+var enemyWidth = 20;
+var enemyHeight = 20;
+var enemyPadding = 10;
+var enemyOffsetTop = 5;
+var enemyOffsetLeft = 5;
+
+/** Holds all the enemies in a 2-d array
+  each enemy will create an object with x/y coords */
 
 
-function drawEnemies(dx,dy,currentX,currentY)
+// Enemy object
+function Enemy(x,y, width, height, status)
 {
-  //dx = -0.10;
-  dy = 0.10;
-  for(c = 0; c < enemyColumnCount; c++)
+  this.x = x;
+  this.y = y;
+  this.width = width;
+  this.height = height;
+  this.status = status;
+}
+
+
+  var randomX = Math.floor(Math.random() * (460 - 20) + 20);
+  var randomY = Math.floor(Math.random() * (225 - 0) + 0);
+
+
+// NEED HELP WITH RANDOM CREATION coordinates
+function createRandomEnemy()
+{
+  var randomX = Math.floor(Math.random() * ((canvasWidth - 20) - 20)) + 20;
+  var randomY = Math.floor(Math.random() * (((canvasHeight/2) + 30) - 0));
+ 
+  // enemyObjects.push(new Enemy(objectX,objectY, 20, 20, 1));
+  enemyObjects.push(new Enemy(randomX - enemyOffsetLeft, randomY - enemyOffsetTop,20,20, 1)); 
+
+  // console.log("Enemy X: " + randomX);
+  // console.log("Enemy Y: " + randomY);
+
+}
+
+var enemyObjects = [];
+
+function drawEnemyObjects()
+{
+  var dx = 0.00;
+  var dy = 0.60;
+
+  // defined outside of the for-loop to keep a consistent speed
+  //defining inside the for-loop will slow speed down per kill
+
+  enemyOffsetLeft += dx;
+  enemyOffsetTop += dy;
+  for(var i = 0; i < enemyObjects.length; i++)
   {
-    for(r=0; r < enemyRowCount; r++)
-    {
-      if(enemies[c][r].status == 1) //checks to see if enemy hasn't been hit (1), rewrite
+
+   if(enemyObjects[i].status == 1) //checks to see if enemy hasn't been hit (1), rewrite
       {
         // Calculation to set x/y coords for each enemy (so they won't stack on eachother)
-        var enemyX = (r*(enemyWidth+enemyPadding)) + enemyOffsetLeft;
-        var enemyY = (c*(enemyHeight+enemyPadding)) + enemyOffsetTop;
-
+        // var enemyX = ( i * (enemyWidth+enemyPadding)) + enemyOffsetLeft;
+        // var enemyY = (i * (enemyHeight+enemyPadding)) + enemyOffsetTop;
+        var enemyX = (enemyObjects[i].x + enemyOffsetLeft);
+        var enemyY = (enemyObjects[i].y + enemyOffsetTop);
         // console.log("Drawing enemies..");
         // console.log("Top: " + enemyOffsetTop);
         // console.log("Left: " + enemyOffsetLeft);
         /** ENEMY MOTION */
-         enemyOffsetTop += dy;
         // enemyOffsetLeft += dx;
-          enemies[c][r].x = enemyX;
-          enemies[c][r].y = enemyY;
+          // enemyObjects[i].x = enemyX;
+          // enemyObjects[i].y = enemyY;
           ctx.beginPath();
           ctx.rect(enemyX,enemyY,enemyWidth,enemyHeight);
+          //console.log("Enemy X: " + enemyX);
           ctx.fillStyle = "#0095DD";
           ctx.fill();
           ctx.closePath(); 
       }
-    }
   }
 }
 
+
+// Reset all enemy objects in their starting locations
 function resetEnemies()
 {
-   for(c = 0; c < enemyColumnCount; c++)
-  {
-    for(r = 0; r < enemyRowCount; r++)
+    for(r = 0; r < enemyObjects.length; r++)
     {
-      var enem = enemies[c][r];
-      console.log(enem);
+      var enem = enemyObjects[r];
+   
+      // Reset enemy starting coordinates
+      enemyOffsetTop = 1;
+      enemyOffsetLeft = 1;
 
       // Set status to 0
       enem.status = 1;
 
-      // Reset enemy starting coordinates
-      enemyOffsetTop = 90;
-      enemyOffsetLeft = 155;
+      // clear my array of enemies
+      enemyObjects.pop();
 
-      var enemyX = (r*(enemyWidth+enemyPadding)) + enemyOffsetLeft;
-      var enemyY = (c*(enemyHeight+enemyPadding)) + enemyOffsetTop;
-      enemies[c][r].x = enemyX;
-      enemies[c][r].y = enemyY;
+      // var enemyX = (enem.x);
+      // var enemyY = (enem.y); 
+      // enemyObjects[r].x = enemyX;
+      // enemyObjects[r].y = enemyY;
     }
   }
-}
 
 function collisionDetection()
 {
   /** BULLET */
   if(startY < 0)
   {
-  console.log("DETECTING...");
+  //console.log("DETECTING...");
     shoot = false;
     fireCount = 0;
     spaceCount = 0;
-    x = shipX + 30;
+    x = shipX + 20;
     y = shipY;
   }
-
 
   // Why won't my code work w/o this????
   /** SHIP (w/WALLS) */
@@ -211,17 +291,22 @@ function collisionDetection()
 
 }
 
+//if(startX + ballRadius > enem.x && startX - ballRadius < enem.x + enemyWidth && startY + ballRadius > enem.y && startY - ballRadius < enem.y + enemyHeight)
 function enemyCollision()
 {
-  for(c = 0; c < enemyColumnCount; c++)
-  {
-    for(r = 0; r < enemyRowCount; r++)
+    for(r = 0; r < enemyObjects.length; r++)
     {
-      var enem = enemies[c][r];
-
+      var enem = enemyObjects[r];
       if(enem.status == 1)
       {
-        if(startX + ballRadius > enem.x && startX - ballRadius < enem.x + enemyWidth && startY + ballRadius > enem.y && startY - ballRadius < enem.y + enemyHeight)
+        // console.log("offsetleft: " + enemyOffsetLeft);
+        // console.log("offsetTop: " + enemyOffsetTop);
+          //console.log(enem);
+          // console.log("startX + ballRadius: " + startX+ballRadius);
+          // console.log("enem.x: " + enem.x);
+          // console.log("enemy width:" + enemyWidth);
+          // console.log("enemy object width:" + enem.width);
+        if(startX + ballRadius > enem.x + enemyOffsetLeft && startX - ballRadius < (enem.x + enemyOffsetLeft) + enem.width && startY + ballRadius > enem.y + enemyOffsetTop && startY - ballRadius < (enem.y + enemyOffsetTop) + enem.height)
         {
           console.log("HIT!");
           enem.status = 0;  // Mark as a hit
@@ -232,14 +317,15 @@ function enemyCollision()
           y = shipY;
           score++;
           enemyKills++;
-
+          explosionAudio.play();
+          createRandomEnemy();
 
           // FIXED tthe collision of an already fired/collided ball registering for oncoming enemies to trigger a hit
           startX = x;
           startY = y;
         }
         // Enemy touches bottom of canvas
-        else if(enem.y > canvasHeight - enemyHeight)
+        else if((enem.y + enemyOffsetTop) > canvasHeight - enem.height)
         {
           end = true;
           lose();
@@ -254,17 +340,21 @@ function enemyCollision()
       }
     }
   }
-}
 
+var enemyCounter = 0;
+// createRandomEnemy();
 var render = function (){
 
+  if(!end)
+  {
+    //arcadeLoop.play();
+  }
   /** MAKING IT MOVE */
     // Clears the screen
     // 4 params: x/y of bottom right corners of a rect. --> whole area will be cleared of any content painted
     
     // this is making the ball disappear 
     ctx.clearRect(0,0, canvas.width, canvas.height);
-
       
   if(shipReady) {
     // if there is a ball redraw the ball
@@ -276,39 +366,31 @@ var render = function (){
       drawBall(); 
     }
 
+  collisionDetection();
+  
   enemyCollision();
 
-  if(enemyKills <= 9)
+  drawEnemyObjects(); 
+
+  if(counter % 5 === 0 && enemyCounter < 10)
+
   {
-    drawEnemies(); 
+    createRandomEnemy();
+    enemyCounter++;
+
   }
-
-  if(enemyKills === 9)
-  {
-    //console.log("INSIDE the RESET");
-    enemyKills = 0;
-    resetEnemies(); 
-    drawEnemies();
-  }
-
-
   drawScore();
   // console.log('Y: ' + y + ballRadius);
   // console.log("DY: " + dy);
 
-  if(score == 12)
+  if(score == 40)
   {
     end = true;
     win();
   }
-
-  collisionDetection();
-
-
 };
 
 /** UPDATE THE SPACESHIP MOVEMENTS */
-
 
 //Listens for keys
 document.addEventListener("keydown", keyDownHandler, false);
@@ -334,13 +416,14 @@ function keyDownHandler(e)
   }
   else if(e.keyCode == 40 && shipY < canvasHeight - shipHeight)
   {
-    console.log("Ship Y: " + shipY);
+    //console.log("Ship Y: " + shipY);
     //console.log("shipY: " + shipY);
     downPressed = true;
   }
   else if(e.keyCode == 32)
   {
     //console.log("SPACE");
+    shootAudio.play();
     spaceCount++;
     spacePressed = true;
     fireCount++;
@@ -352,7 +435,7 @@ function keyUpHandler(e)  // e --> event
 {
   if(e.keyCode == 39)
   {
-    console.log("right off!");
+   // console.log("right off!");
     rightPressed = false;
   }
   else if(e.keyCode == 37)
@@ -369,6 +452,7 @@ function keyUpHandler(e)  // e --> event
   }
   else if(e.keyCode == 32)
   {
+    
     spacePressed = !spacePressed;
   }
 }
@@ -406,16 +490,29 @@ var update = function(mod)
 };
 
 /** THE MAIN GAME LOOP */
+var seconds;
+var counter = 0;
 
 var main = function ()
 {
   var now = Date.now();
   var delta = now - then;
 
-
   if(!end)
   {
-    update(delta / 1000);
+    
+    // Allows me to track seconds --> spawn new enemies/time elapsed
+    if(seconds != Math.round(now/1000))
+    {
+      seconds = Math.round(now/1000);
+      counter++;
+    }
+
+
+    // console.log(seconds);
+    // console.log(counter);
+    update(delta / 10000);
+
     render();
 
     then = now;
@@ -473,6 +570,7 @@ function drawScore()
 
 function win()
 {
+  //arcadeLoop.pause();
   ctx.font = "30px Arial";
   ctx.fillStyle = "white";
   ctx.fillText("YOU WIN!!!", 160, 100);
@@ -480,6 +578,7 @@ function win()
 
 function lose()
 {
+  //arcadeLoop.pause();
   ctx.font = "30px Arial";
   ctx.fillStyle = "white";
   ctx.fillText("YOU LOSE", 160, 100);
@@ -492,9 +591,16 @@ function dead()
   ctx.fillText("You've been HIT!",160,100);
 }
 
+function reset()
+{
+  console.log("RESET");
+  end = false;
+  document.location.reload();  // reloads the page
+}
 
 /**  TO DO 
 
+<<<<<<< HEAD
 
 - Generate enemies based off of math.random + setTimout
 
@@ -508,7 +614,7 @@ function dead()
 
 
 
-
+}
 
 
 

@@ -1,4 +1,24 @@
 body
 {
   background-color: black;
+  background-image: url("images/background.png");
+}
+
+button
+{
+  font-family: 'Orbitron', sans-serif;
+  color: white;
+  background-color: #003366;
+  margin-left: 48%;
+  margin-top: 50px;
+  width: 50px;
+  height: 30px;
+}
+
+#startMenu
+{
+  height: 700px;
+  width: 480px;
+  background-color: white;
+  margin: auto;
 }
