@@ -406,8 +406,7 @@ function keyDownHandler(e)
   }
   else if(e.keyCode == 37  && shipX > 0)  // keycode 37 is left
   {
-    console.log("X: " + shipX);
-    leftPressed = true;
+     leftPressed = true;
   }
   else if(e.keyCode == 38 && shipY > 0)
   {
