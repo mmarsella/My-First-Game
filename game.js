@@ -598,21 +598,6 @@ function reset()
   document.location.reload();  // reloads the page
 }
 
-/**  TO DO 
-
-<<<<<<< HEAD
-
-- Generate enemies based off of math.random + setTimout
-
-- drawEnemies(passRandom x,y coordinates in);
-
-- make sure coordinates are within upper half of canvas
-
-
-
-*/
-
-
 
 }
 
