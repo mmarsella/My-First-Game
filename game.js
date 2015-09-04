@@ -14,17 +14,33 @@
 
 //Hide Everything
 $("canvas").css("visibility", "hidden");
-$("button").css("visibility","hidden");
+$("#button").css("visibility","hidden");
 
+
+// MAIN MENU
 var startMenu = $("#startMenu")[0],
     canvas = document.getElementById("myCanvas");
 
-// MAIN MENU
 
 // on start -- fade out div
 
+var startButton = $("#play");
 
 
+//PLAY button
+$("#play").on("click", function(){
+
+    $("#startMenu").fadeOut("slow", function() {
+      $("#play").css("visibility","hidden");
+      $("#play").remove();
+      $("#startMenu").remove();
+
+      $("canvas").css("visibility", "visible");
+  $("#button").css("visibility","visible");
+      game();
+    });
+
+});
 
 
 
@@ -42,12 +58,6 @@ var startMenu = $("#startMenu")[0],
 //   game();
 // }
 
-  $("#startMenu").fadeOut("slow", function() {
-    $("button").css("visibility","hidden");
-    $("canvas").css("visibility", "visible");
-$("button").css("visibility","visible");
-    game();
-  });
 
 
 function game(){
@@ -233,7 +243,6 @@ function drawEnemyObjects()
       }
   }
 }
-
 
 // Reset all enemy objects in their starting locations
 function resetEnemies()
@@ -454,7 +463,6 @@ function keyUpHandler(e)  // e --> event
   }
 }
 
-
 var update = function(mod)
 {
   if(rightPressed)
@@ -521,7 +529,6 @@ var main = function ()
 
 var then = Date.now();
 main();
-
 
 // draws ball starting from the center of the ship
 // and travels up y-axis 
