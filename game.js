@@ -11,8 +11,51 @@
 
 */
 
-  //FREEZES WINDOW SCROLLING
 
+//Hide Everything
+// $("canvas").css("visibility", "visible");
+$("button").css("visibility","hidden");
+
+var startMenu = $("#startMenu")[0],
+    canvas = document.getElementById("myCanvas");
+
+// MAIN MENU
+
+// on start -- fade out div
+
+
+
+
+
+
+
+
+
+// setTimeout(function(){
+
+// $("canvas").css("visibility","visible");
+
+
+// },1000);
+
+
+// if($("canvas").css("visibility") != "hidden")  
+// {
+//   startMenu.fadeOut(function() {
+//     canvas.fadeIn();
+//   });
+//   game();
+// }
+
+  $("#startMenu").fadeOut("slow", function() {
+    game();
+  });
+
+
+function game(){
+
+
+//FREEZES WINDOW SCROLLING
 $('body').css({'overflow':'hidden'});
 $(document).bind('scroll',function () { 
     window.scrollTo(0,0); 
@@ -25,7 +68,8 @@ reset();
 console.log("RESET");
 });
 
-var canvas = document.getElementById("myCanvas");
+
+//Toggle visibility of game
 
 var shootAudio = document.getElementById("shoot");
 var explosionAudio = document.getElementById("explosion");
@@ -334,7 +378,6 @@ var render = function (){
     enemyCounter++;
 
   }
-  
   drawScore();
   // console.log('Y: ' + y + ballRadius);
   // console.log("DY: " + dy);
@@ -344,7 +387,6 @@ var render = function (){
     end = true;
     win();
   }
-
 };
 
 /** UPDATE THE SPACESHIP MOVEMENTS */
@@ -555,12 +597,7 @@ function reset()
 }
 
 
-
-
-
-
-
-
+}
 
 
 

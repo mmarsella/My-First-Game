@@ -1,6 +1,7 @@
 body
 {
   background-color: black;
+  background-image: url("images/background.png");
 }
 
 button
@@ -12,4 +13,12 @@ button
   margin-top: 50px;
   width: 50px;
   height: 30px;
+}
+
+#startMenu
+{
+  height: 700px;
+  width: 480px;
+  background-color: white;
+  margin: auto;
 }
