@@ -27,6 +27,8 @@ var startMenu = $("#startMenu")[0],
 var startButton = $("#play");
 
 
+
+
 //PLAY button
 $("#play").on("click", function(){
 

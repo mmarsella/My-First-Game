@@ -45,3 +45,11 @@ span
   margin-top: 80px;
   margin-left: 20px;
 }
+#startMenu
+{
+  border: solid white 1px;
+}
+canvas
+{
+  border: solid white 1px;
+}
