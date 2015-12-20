@@ -21,7 +21,6 @@
         });
   });
 
-
   // if($("canvas").css("visibility") != "hidden")  
   // {
   //   startMenu.fadeOut(function() {

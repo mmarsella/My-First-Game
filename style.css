@@ -17,7 +17,7 @@ body
 
 #startMenu
 {
-  height: 700px;
+  height: 400px;
   width: 480px;
   background-image: url("images/background.png");
   margin: auto;
@@ -42,8 +42,8 @@ span
   display: inline-block;
   font-family: 'Orbitron', sans-serif;
   color: white;
-  margin-top: 80px;
-  margin-left: 20px;
+  margin-top: 40px;
+  margin-left: 30px;
 }
 #startMenu
 {
