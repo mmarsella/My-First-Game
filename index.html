@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mark's Game</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link href='https://fonts.googleapis.com/css?family=Orbitron:400,700' rel='stylesheet' type='text/css'>
+    <style>
+      * {padding: 0; margin: 0;}
+         canvas {background: #eee; display: block; margin: 0 auto; }
+    </style>
+</head>
+<body>
+<br>
+<br>
+<br>
+<div id="startMenu">
+  <span>In the year 20XX, </span> 
+  <span>The universe is controlled by squares</span>
+  <span> A lone ship travels the galaxy</span>
+  <span>in hopes of vanquishing all that is square</span> 
+  <span>and discovering new shapes along the way... </span>
+</div>
+
+<button id="play">PLAY</button>
+<canvas id="myCanvas" width="480" height="700"></canvas>
+
+<audio src="sound/arcadeLoop.wav" id="arcadeLoop"></audio> 
+<audio src="sound/shoot.wav" id="shoot"></audio>
+<audio src="sound/explosion.wav" id="explosion"></audio>
+<audio src="" id="gameOver"></audio>
+<button id="button">RESET</button>
+<script type="text/javascript" src="game.js"></script>
+  
+</body>
+</html>
